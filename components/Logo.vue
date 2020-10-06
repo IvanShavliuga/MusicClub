@@ -1,13 +1,17 @@
 <template>
-  <div class="logo" width="245" height="180" viewBox="0 0 452 342" xmlns="http://www.w3.org/2000/svg">
-    <h1 class="l"
+  <div class="logo">
+    <h1 class="logo__title">Hello</h1>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="less">
 .logo {
   animation: 1s appear;
   margin: auto;
+  &__title {
+    color: red;
+    font-size: 80px;
+  }
 }
 
 @keyframes appear {
