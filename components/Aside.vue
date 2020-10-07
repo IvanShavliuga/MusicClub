@@ -34,24 +34,47 @@
       </ul>
       <h3 class="aside__block-title aside__block-add">Плейлисты</h3>
       <ul class="aside__block-list">
-        <li class="aside__block-item aside__block-playlist">
-          <a class="aside__block-link">Dance</a>
+        <li class="aside__block-item aside__block-playlist"
+          v-for="(p,k) in playlists" :key="k"  @click="selpl(k)">
+          <a class="aside__block-link">{{p.name}}</a>
         </li>
-        <li class="aside__block-item aside__block-playlist">
+        <!--<li class="aside__block-item aside__block-playlist">
           <a class="aside__block-link">Untitled</a>
         </li>
         <li class="aside__block-item aside__block-playlist">
           <a class="aside__block-link">My Styles</a>
-        </li>
+        </li>-->
       </ul>
     </div>
   </aside>
 </template>
+<script>
+export default {
+  data () {
+    return {
+      tracks: [],
+      playlists: []
+    }
+  },
+  methods: {
+    selpl(id) {
+      this.$emit('selplaylist', id)
+      this.$store.dispatch('selectPlaylist', id)
+    }
+  },
+  created () {
+    this.playlists =this.$store.state.playlists;
+    this.tracks = this.$store.state.tracks.filter((t)=>{return t.playlistid==this.$store.state.activeplaylist});
+    this.activetrack = this.$store.state.activetrack;
+  }
+}
+</script>
 <style scoped lang="less">
 @import '../assets/styles/mixins.less';
 
 .aside {
   padding: 20px;
+  width: 15vw;
   border-right: 1px solid #EEEEEE;
   &__logo {
     font-family: Noto Sans;
@@ -77,31 +100,32 @@
       margin-bottom: 10px;
     }
     &-discover {
-      .icon('../images/discover.svg')
+      .icon('../images/discover.svg', 16px, 16px, 10px, 15px)
     }
     &-songs {
-      .icon('../images/songs.svg')
+      .icon('../images/songs.svg', 16px, 16px, 10px, 15px)
     }
     &-alboms {
-      .icon('../images/alboms.svg')
+      .icon('../images/alboms.svg', 16px, 16px, 10px, 15px)
     }
     &-artist {
-      .icon('../images/artist.svg')
+      .icon('../images/artist.svg', 16px, 16px, 10px, 15px)
     }
     &-favorite {
-      .icon('../images/favorite.svg')
+      .icon('../images/favorite.svg', 16px, 16px, 10px, 15px)
     }
     &-history {
-      .icon('../images/history.svg')
+      .icon('../images/history.svg', 16px, 16px, 10px, 15px)
     }
     &-download {
-      .icon('../images/download.svg')
+      .icon('../images/download.svg', 16px, 16px, 10px, 15px)
     }
     &-playlist {
-      .icon('../images/playlist.svg')
+      .icon('../images/playlist.svg', 16px, 16px, 10px, 15px)
     }
     &-add {
-      .icon('../images/add.svg');
+      .icon('../images/add.svg', 16px, 16px, 10px, 15px);
+      margin-top: 35px;
       &:after {
         left: auto;
         right: -10px;

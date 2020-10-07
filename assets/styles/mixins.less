@@ -1,15 +1,16 @@
-.icon(@url) {
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+.icon(@url, @width, @height, @left, @top) {
   &:after {
     content: ' ';
     position: absolute;
     display: block;
-    width: 16px;
-    height: 16px;
+    width: @width;
+    height: @height;
     z-index: 10;
     background-image: url(@url);
     background-repeat: no-repeat;
     background-position: center center;
-    left: 10px;
-    top: 15px;
+    left: @left; //10px;
+    top: @top; //15px;
   }
 }
