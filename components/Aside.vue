@@ -44,7 +44,12 @@
         <li class="aside__block-item aside__block-playlist">
           <a class="aside__block-link">My Styles</a>
         </li>-->
+        <li class="aside__block-item aside__block-playlist"
+          v-for="(p,k) in playlistsdata" :key="k"  @click="selpl(k)">
+          <a class="aside__block-link">{{p.name}}</a>
+        </li>
       </ul>
+      <p>{{playlistsdata}}</p>
     </div>
   </aside>
 </template>
@@ -53,7 +58,8 @@ export default {
   data () {
     return {
       tracks: [],
-      playlists: []
+      playlists: [],
+      playlistsdata: []
     }
   },
   methods: {
@@ -64,6 +70,7 @@ export default {
   },
   created () {
     this.playlists =this.$store.state.playlists;
+    this.playlistsdata =this.$store.state.playlistsdata;
     this.tracks = this.$store.state.tracks.filter((t)=>{return t.playlistid==this.$store.state.activeplaylist});
     this.activetrack = this.$store.state.activetrack;
   }
