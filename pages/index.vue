@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Logo/>
+    <Aside/>
   </div>
 </template>
 
@@ -18,8 +18,7 @@ export default {}
   margin: 0 auto;
   min-height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
   text-align: center;
 }
 

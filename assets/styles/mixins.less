@@ -1,0 +1,15 @@
+.icon(@url) {
+  &:after {
+    content: ' ';
+    position: absolute;
+    display: block;
+    width: 16px;
+    height: 16px;
+    z-index: 10;
+    background-image: url(@url);
+    background-repeat: no-repeat;
+    background-position: center center;
+    left: 10px;
+    top: 15px;
+  }
+}
