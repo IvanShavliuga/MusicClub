@@ -1,4 +1,5 @@
-
+//const axios = require("axios");
+import axios from 'axios'
 export const state = () =>({
     activetrack: 2,
     activeplaylist: 0,
@@ -96,16 +97,59 @@ export const state = () =>({
     },{
       id: 2,
       name: 'My Styles'
-    }]
+    }],
+    playlistsdata: [],
+    client_id : 'la64n2rmwbr592p4v9ekn7999',
+    client_secret : 'BQDvnh9XXAnvOwz_QomtPoaVEmmCDFUAmYLYH7FIY8GNZA43XROrRMoyLaPQvXLOyIXdlwZ9xd1hoyug1GmwxBJdYUgu9U-eZnhTZ61hB8BL3qt2MywZ7yQLdrtKmk8vwH4JZi6bckOY9GRRuKu3XjoOixL1BGrflN0sSVQHWiSU4E9BkOWSBbkhI2vgLjXYL1nu3PlBn4ArybQQKX_SQx0uCog7eiR-czwsiPfKIV70kaOw1LgMkSOBdw7wE0hTgRj8xGaNOONB_JDCaYHtqKNsObr6TDbuh0U'
   })
 export const mutations = {
   SELECT_PLAYLIST(state, id) {
     state.activeplaylist = id
+  },
+  INIT_USER(state) {
+    let response =  axios({
+        method: 'post',
+        url: 'https://accounts.spotify.com/api/token',
+        headers: {
+            'Authorization': 'Basic ' + (new Buffer(state.client_id + ':' + state.client_secret).toString('base64')),
+            'Content-Type': 'application/x-www-form-urlencoded'
+         },
+        params: {
+            grant_type: 'refresh_token',
+            refresh_token: state.client_secret
+        }
+    });
+  },
+  LOAD_PLAYLIST(state) {
+    let response =  axios({
+        method: 'post',
+        url: 'https://accounts.spotify.com/api/token',
+        headers: {
+            'Authorization': 'Basic ' + (new Buffer(state.client_id + ':' + state.client_secret).toString('base64')),
+            'Content-Type': 'application/x-www-form-urlencoded'
+         },
+        params: {
+            grant_type: 'refresh_token',
+            refresh_token: 'BQDvnh9XXAnvOwz_QomtPoaVEmmCDFUAmYLYH7FIY8GNZA43XROrRMoyLaPQvXLOyIXdlwZ9xd1hoyug1GmwxBJdYUgu9U-eZnhTZ61hB8BL3qt2MywZ7yQLdrtKmk8vwH4JZi6bckOY9GRRuKu3XjoOixL1BGrflN0sSVQHWiSU4E9BkOWSBbkhI2vgLjXYL1nu3PlBn4ArybQQKX_SQx0uCog7eiR-czwsiPfKIV70kaOw1LgMkSOBdw7wE0hTgRj8xGaNOONB_JDCaYHtqKNsObr6TDbuh0U'
+        }
+    });
+    let lt = axios({
+       method: 'get',
+       url: 'https://api.spotify.com/v1/users/la64n2rmwbr592p4v9ekn7999/playlists',
+       headers: { 'Authorization': 'Bearer BQDvnh9XXAnvOwz_QomtPoaVEmmCDFUAmYLYH7FIY8GNZA43XROrRMoyLaPQvXLOyIXdlwZ9xd1hoyug1GmwxBJdYUgu9U-eZnhTZ61hB8BL3qt2MywZ7yQLdrtKmk8vwH4JZi6bckOY9GRRuKu3XjoOixL1BGrflN0sSVQHWiSU4E9BkOWSBbkhI2vgLjXYL1nu3PlBn4ArybQQKX_SQx0uCog7eiR-czwsiPfKIV70kaOw1LgMkSOBdw7wE0hTgRj8xGaNOONB_JDCaYHtqKNsObr6TDbuh0U'}
+     });
+     lt.then(response => (state.playlistsdata = response.data));
   }
 }
 export const actions = {
   selectPlaylist({commit}, id) {
     commit('SELECT_PLAYLIST', id)
+  },
+  initPlaylist({commit}) {
+    commit('LOAD_PLAYLIST')
+  },
+  initUser({commit}) {
+    commit('INIT_USER')
   }
 }
 export const getters = {
@@ -116,6 +160,11 @@ export const getters = {
   playlist: state=>{
     console.log(state.activeplaylist)
     let pl = state.playlists.filter((p)=>{return p.id==state.activeplaylist})
+    return pl
+  },
+  playlistsdata: state=>{
+    console.log(state.playlistsdata)
+    let pl = state.playlistsdata
     return pl
   }
 }
